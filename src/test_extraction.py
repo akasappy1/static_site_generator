@@ -32,6 +32,12 @@ class ExtractionTests(unittest.TestCase):
         )
         self.assertListEqual([("image", "https://rickrollface.com"), ("image2", "https://rickastley.com/png/")], matches)
 
+    def test_link_first(self):
+        matches = extract_markdown_links(
+            "[Start here](https://firstclickthru.com) and see how you do."
+        )
+        self.assertListEqual([("Start here", "https://firstclickthru.com")], matches)
+
     
 if __name__ == "__main__":
     unittest.main()

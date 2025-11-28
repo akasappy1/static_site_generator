@@ -1,6 +1,6 @@
 import unittest
 
-from splitdelimiter import split_nodes_delimiter
+from splitdelimiter import split_nodes_delimiter, split_nodes_images, split_nodes_link
 from textnode import TextNode, TextType
 
 class TestSplitDelimiter(unittest.TestCase):
@@ -52,8 +52,65 @@ class TestSplitDelimiter(unittest.TestCase):
         actual = split_nodes_delimiter(sample_node, sample_sep, style)
         expected = [TextNode("And this is ", TextType.TEXT), TextNode("code", TextType.CODE)]
         self.assertEqual(actual, expected)
-        
 
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_images([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode(
+                "second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"
+                ),
+        ]   ,
+            new_nodes,
+        )   
+        
+    def test_split_links(self):
+        node = TextNode(
+            "This is a [linked listicle](https://dadjokeslist.com)! Sorry, [not sorry](https://regretnothing.com)",
+            TextType.TEXT
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("This is a ", TextType.TEXT),
+                TextNode("linked listicle", TextType.LINK, "https://dadjokeslist.com"),
+                TextNode("! Sorry, ", TextType.TEXT),
+                TextNode("not sorry", TextType.LINK, "https://regretnothing.com")
+        ]   ,
+            new_nodes,
+        )
+
+    def test_starting_link(self):
+        node = TextNode(
+            "[Click here](https://somelink.com) to reveal your destiny", TextType.TEXT
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("Click here", TextType.LINK, "https://somelink.com"),
+                TextNode(" to reveal your destiny", TextType.TEXT)
+        ]   ,
+            new_nodes
+        )
+
+    def test_starting_image(self):
+        node = TextNode(
+            "![Spooky Map](https://badmaps.com) Caption: A spooky map", TextType.TEXT
+        )
+        new_nodes = split_nodes_images([node])
+        self.assertListEqual(
+            [
+                TextNode("Spooky Map", TextType.IMAGE, "https://badmaps.com"),
+                TextNode(" Caption: A spooky map", TextType.TEXT)
+        ]   , new_nodes
+        )
 
 if __name__ == "__main__":
     unittest.main()
