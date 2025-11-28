@@ -47,6 +47,9 @@ def split_nodes_link(old_nodes):
             if text != "":
                 last_text_node = TextNode(text, TextType.TEXT)
                 new_nodes.append(last_text_node)
+    for node in new_nodes:
+        if node.text == "":
+            new_nodes.remove(node)
     return new_nodes
 
 
@@ -72,6 +75,9 @@ def split_nodes_images(old_nodes):
             if text != "":
                 last_text_node = TextNode(text, TextType.TEXT)
                 new_nodes.append(last_text_node)
+    for node in new_nodes:
+        if node.text == "":
+            new_nodes.remove(node)
     return new_nodes
 
         
