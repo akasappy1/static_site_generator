@@ -10,7 +10,6 @@ class BlockType(Enum):
     ORDERED_LIST = "ol"
 
 def markdown_to_blocks(markdown):
-
     block_list = markdown.split("\n\n")
     final_block_list = []
     for block in block_list:
@@ -33,3 +32,4 @@ def block_to_block_type(block):
     else:
         return BlockType.PARAGRAPH
     
+
