@@ -1,5 +1,5 @@
 import unittest
-from extraction import extract_markdown_images, extract_markdown_links
+from extraction import extract_markdown_images, extract_markdown_links, extract_title
 
 class ExtractionTests(unittest.TestCase):
     def test_extract_markdown_images(self):
@@ -37,6 +37,15 @@ class ExtractionTests(unittest.TestCase):
             "[Start here](https://firstclickthru.com) and see how you do."
         )
         self.assertListEqual([("Start here", "https://firstclickthru.com")], matches)
+
+    def test_extract_title(self):
+        md = """
+# Kit Marlowe
+## Sexiest death ever?
+### Cause all in all, getting stabbed in the eye sound kind of wild.
+"""
+        actual = extract_title(md)
+        self.assertEqual(actual, "Kit Marlowe")
 
     
 if __name__ == "__main__":
