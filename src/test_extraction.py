@@ -47,6 +47,22 @@ class ExtractionTests(unittest.TestCase):
         actual = extract_title(md)
         self.assertEqual(actual, "Kit Marlowe")
 
+    def test_no_title(self):
+        md = """
+## No, I like
+### Thomas Kyd
+"""
+        with self.assertRaises(Exception) as e:
+            extract_title(md)
+        self.assertEqual(str(e.exception), 
+                         "No title found in markdown text.")
+        
+    def test_whitespace_strip(self):
+        md = """
+#      Ew, Ben Jonson!       
+"""
+        actual = extract_title(md)
+        self.assertEqual(actual, "Ew, Ben Jonson!")
     
 if __name__ == "__main__":
     unittest.main()

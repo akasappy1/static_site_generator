@@ -9,4 +9,4 @@ def text_to_textnodes(text):
     images = split_nodes_images(code)
     final_nodes = split_nodes_link(images)
     return final_nodes
-
+    

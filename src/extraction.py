@@ -11,21 +11,14 @@ def extract_markdown_links(text):
 
 def extract_title(text):
     lines = text.splitlines()
-    # print(lines)
+    #print(lines)
     for line in lines:
         if line.startswith("# "):
-            # print(line)
+            #print(line)
             title_line = line.split("# ", 1)
             title = title_line[1]
-            title = title.lstrip()
+            title = title.strip()
             return title
-        else: 
-            raise Exception("No title found in markdown text.")
         
-md = """
-
-# Kit Marlowe
-## Sexiest death ever?
-### Cause all in all, getting stabbed in the eye sound kind of wild.
-"""
-extract_title(md)
+    raise Exception("No title found in markdown text.")
+        
