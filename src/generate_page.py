@@ -3,10 +3,10 @@ from markdowntohtml import markdown_to_html_node
 from extraction import extract_title
 from htmlnode import ParentNode
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath="/"):
     """Reads in a markdown file and template to convert it to html."""
     print(f"Generating page from {from_path} to {dest_path}" 
-          + f"using {template_path}")
+          + f" using {template_path}")
     dest_directory = os.path.dirname(dest_path)
     os.makedirs(dest_directory, exist_ok=True)
     with (open(from_path, "r") as f1, 
@@ -20,10 +20,12 @@ def generate_page(from_path, template_path, dest_path):
       page_title = extract_title(md_text)
       out_html = template.replace(r"{{ Title }}", page_title)
       out_html = out_html.replace(r"{{ Content }}", page_string)
+      out_html = out_html.replace(r'href="/', f'href={basepath}')
+      out_html = out_html.replace(r'src="/', f'src={basepath}')
       f3.write(out_html)
 
 def generate_pages_recursive(dir_path_content, template_path, 
-                             dest_dir_path, base_src_dir = ""):
+                             dest_dir_path, basepath="/", base_src_dir = ""):
    """Recursively reads through a directory and generates static html for each
    of the markdown files in it, copying each md file as a separate html file
    in the destination directory."""
@@ -43,16 +45,22 @@ def generate_pages_recursive(dir_path_content, template_path,
       #print(ext)
       if ext == ".md":
          src_relpath = os.path.relpath(item_path, base_src_dir)
-         # print(item_path)
-         # print(dir_path_content)
-         # print(src_relpath)
+         print(item_path)
+         print(dir_path_content)
+         print(src_relpath)
          dest_relpath = str(src_relpath.replace(".md", ".html"))
+         print(dest_relpath)
          dest_file_path = os.path.join(dest_dir_path, dest_relpath)
-         # print(dest_file_path)
-         generate_page(item_path, template_path, dest_file_path)
+         print(dest_file_path)
+         generate_page(item_path, template_path, dest_file_path, basepath)
       else:
          generate_pages_recursive(item_path, template_path, dest_dir_path,
-                                  base_src_dir=base_src_dir)
+                                  basepath, base_src_dir=base_src_dir)
+
+generate_pages_recursive(
+        "/home/aksap/static_site_generator/content",
+        "/home/aksap/static_site_generator/template.html",
+        "/home/aksap/static_site_generator/docs")
 
 # generate_pages_recursive(
 #         "/home/aksap/static_site_generator/content",

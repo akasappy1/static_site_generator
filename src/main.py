@@ -10,16 +10,16 @@ def main():
                            #TextType.BOLD, 
                            #"https://knowyourmeme.com/memes/all-your-base-are-belong-to-us")
     # print(sample_node)
-    basepath = sys.args[0]
+    basepath = sys.argv[0]
     if basepath == None:
         basepath = "/"
     recursive_tree_copy(
         "/home/aksap/static_site_generator/static",
-        basepath)
+        "/home/aksap/static_site_generator/docs")
     generate_pages_recursive(
         "/home/aksap/static_site_generator/content",
         "/home/aksap/static_site_generator/template.html",
-        basepath)
+        "/home/aksap/static_site_generator/docs", basepath)
     # generate_page(
     #     "/home/aksap/static_site_generator/content/index.md",
     #     "/home/aksap/static_site_generator/template.html",
