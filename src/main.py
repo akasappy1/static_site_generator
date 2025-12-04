@@ -1,4 +1,6 @@
 # from enum import Enum
+import sys
+
 from textnode import TextType, TextNode
 from recursivecopy import recursive_tree_copy
 from generate_page import generate_page, generate_pages_recursive
@@ -8,13 +10,16 @@ def main():
                            #TextType.BOLD, 
                            #"https://knowyourmeme.com/memes/all-your-base-are-belong-to-us")
     # print(sample_node)
+    basepath = sys.args[0]
+    if basepath == None:
+        basepath = "/"
     recursive_tree_copy(
         "/home/aksap/static_site_generator/static",
-        "/home/aksap/static_site_generator/public")
+        basepath)
     generate_pages_recursive(
         "/home/aksap/static_site_generator/content",
         "/home/aksap/static_site_generator/template.html",
-        "/home/aksap/static_site_generator/public")
+        basepath)
     # generate_page(
     #     "/home/aksap/static_site_generator/content/index.md",
     #     "/home/aksap/static_site_generator/template.html",
