@@ -10,7 +10,7 @@ def main():
                            #TextType.BOLD, 
                            #"https://knowyourmeme.com/memes/all-your-base-are-belong-to-us")
     # print(sample_node)
-    basepath = sys.argv[0]
+    basepath = sys.argv[1]
     if basepath == None:
         basepath = "/"
     recursive_tree_copy(

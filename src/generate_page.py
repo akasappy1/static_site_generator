@@ -20,8 +20,8 @@ def generate_page(from_path, template_path, dest_path, basepath="/"):
       page_title = extract_title(md_text)
       out_html = template.replace(r"{{ Title }}", page_title)
       out_html = out_html.replace(r"{{ Content }}", page_string)
-      out_html = out_html.replace(r'href="/', f'href={basepath}')
-      out_html = out_html.replace(r'src="/', f'src={basepath}')
+      out_html = out_html.replace(r'href="/', f'href="{basepath}')
+      out_html = out_html.replace(r'src="/', f'src="{basepath}')
       f3.write(out_html)
 
 def generate_pages_recursive(dir_path_content, template_path, 
