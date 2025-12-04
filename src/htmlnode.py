@@ -13,7 +13,7 @@ class HTMLNode():
     def props_to_html(self):
         if self.props == {} or self.props == None:
             return ""
-        formatted_props = " " + " ".join(f'{key}="{value}"' for key, value in self.props.items())
+        formatted_props = " " + " ".join(fr'{key}="{value}"' for key, value in self.props.items())
         return formatted_props
 
     def __repr__(self):

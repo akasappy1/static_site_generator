@@ -22,7 +22,41 @@ def generate_page(from_path, template_path, dest_path):
       out_html = out_html.replace(r"{{ Content }}", page_string)
       f3.write(out_html)
 
+def generate_pages_recursive(dir_path_content, template_path, 
+                             dest_dir_path, base_src_dir = ""):
+   """Recursively reads through a directory and generates static html for each
+   of the markdown files in it, copying each md file as a separate html file
+   in the destination directory."""
+   if base_src_dir == "": 
+      base_src_dir = dir_path_content
+   dir_path = os.path.abspath(dir_path_content) 
+   #print(dir_path)
+   if os.listdir(dir_path) == []:
+      return
+   dir_list = os.listdir(dir_path)
+   #print(dir_list)
+   for item in dir_list:
+      item_path = os.path.join(dir_path, item)
+      #print(item_path)
+      root, ext = os.path.splitext(item_path)
+      #print(root)
+      #print(ext)
+      if ext == ".md":
+         src_relpath = os.path.relpath(item_path, base_src_dir)
+         # print(item_path)
+         # print(dir_path_content)
+         # print(src_relpath)
+         dest_relpath = str(src_relpath.replace(".md", ".html"))
+         dest_file_path = os.path.join(dest_dir_path, dest_relpath)
+         # print(dest_file_path)
+         generate_page(item_path, template_path, dest_file_path)
+      else:
+         generate_pages_recursive(item_path, template_path, dest_dir_path,
+                                  base_src_dir=base_src_dir)
 
-
+# generate_pages_recursive(
+#         "/home/aksap/static_site_generator/content",
+#         "/home/aksap/static_site_generator/template.html",
+#         "/home/aksap/static_site_generator/public")
 
      
